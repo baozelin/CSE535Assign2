@@ -3,6 +3,7 @@ package com.example.group8.cse535assign2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     Random random;
     Thread thread;
 
-    SQLiteDatabase db;
 
     EditText patientName;
     EditText patientID;
@@ -55,13 +55,41 @@ public class MainActivity extends AppCompatActivity {
     private LineGraphSeries<DataPoint> series;
     GraphView graph;
 
-
     String path;
+    File dbfile;
+    SQLiteDatabase db;
+    //public static final String DATABASE_NAME = "patient";
+    //public static final String DATABASE_LOCATION = Environment.getExternalStorageState()+ File.separator +"mydata" + File.separator + DATABASE_NAME;
 
     @ Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        /**
+         * component
+         *
+         */
+        patientID = (EditText) findViewById(R.id.id);
+        age = (EditText) findViewById(R.id.age);
+        patientName = (EditText) findViewById(R.id.name);
+
+        /**
+         * database
+         */
+        path = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+        //dbfile = new File(Environment.getExternalStorageDirectory()+"/mydata");
+        dbfile = new File(this.getExternalFilesDir(null) + "/mydata");
+
+
+        if(!dbfile.exists() && !dbfile.isDirectory()){
+            dbfile.mkdirs();
+        }
+
+        db = SQLiteDatabase.openOrCreateDatabase(dbfile + "/group8", null);
 
 
         /**
@@ -153,68 +181,43 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //name = ((EditText) findViewById(R.id.name)).getText().toString();
-        //age = ((EditText) findViewById(R.id.age)).getText().toString();
-        //id = ((EditText) findViewById(R.id.id)).getText().toString();
+        /**
+         * create db button
+         */
+
+
 
 
         Button createDB = (Button) findViewById(R.id.createDB);
         createDB.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)  {
-                try{
-
-                    path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/database";
-                    File pathFile = new File(path);
-                    File file = new File(path+"/mydata.db");
 
 
-                        if(!pathFile.exists()){
-                            pathFile.mkdirs();
-                        }
-                        if(!file.exists()){
-                            file.createNewFile();
-                        }
-
-
-                    db = SQLiteDatabase.openOrCreateDatabase(file, null);
-                    db.beginTransaction();
-
+                    String table_name = patientNameText + "_" + patientIDText + "_" + ageText +"_" + sexText;
 
                     try {
+                        db.beginTransaction();
 
                         //perform your database operations here ...
-                        db.execSQL("create table tblPat ("
-                                + " recID integer PRIMARY KEY autoincrement, "
-                                + " name text, "
-                                + " id text, "
-                                + " age text, "
-                                + " sex text ); " );
+                        db.execSQL("create table if not exists  " + table_name + " ( TIMESTAMP FLOAT , X FLOAT, Y FLOAT, Z FLOAT) ");
+                        //db.execSQL("create table if not exists  " + TABLE_NAME + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, SURNAME TEXT, MARKS INTEGER) ");
 
                         db.setTransactionSuccessful(); //commit your changes
-
-
+                        //System.out.println(table_name);
+                        //Log.e("uploadFile", "Source File not exist :" + table_name );
+                        Toast.makeText(MainActivity.this, "CREATE", Toast.LENGTH_LONG).show();
                     }
                     catch (SQLiteException e) {
-                        //report problem
+                        e.getStackTrace();
+                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                     finally {
                         db.endTransaction();
                     }
-                }catch (SQLException e){
-
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
-        patientID = (EditText) findViewById(R.id.id);
-        age = (EditText) findViewById(R.id.age);
-        patientName = (EditText) findViewById(R.id.name);
-        //sex = (EditText) findViewById(R.id.sex);
 
 
         patientName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
