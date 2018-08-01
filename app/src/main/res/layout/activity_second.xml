@@ -7,6 +7,45 @@
     tools:context=".MainActivity">
 
 
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphY"
+        android:layout_width="349dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="9dp"
+        android:background="#FAFA82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graphX" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphZ"
+        android:layout_width="349dp"
+        android:layout_height="79dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="#FAFA82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graphY" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphX"
+        android:layout_width="349dp"
+        android:layout_height="82dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="1dp"
+        android:background="#FAFA82"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearForm"
         android:layout_width="340dp"
@@ -129,41 +168,6 @@
             android:inputType="number" />
     </TableRow>
 
-    <TableRow
-        android:layout_width="196dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="7dp">
-
-        <Button
-            android:id="@+id/stop"
-            android:layout_width="72dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/holo_red_dark"
-            android:text="Stop"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/start"
-            android:layout_width="72dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/holo_green_dark"
-            android:text="Start"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toStartOf="@+id/stop"
-            app:layout_constraintHorizontal_bias="0.946"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </TableRow>
-
     <Button
         android:id="@+id/createDB"
         android:layout_width="71dp"
@@ -176,36 +180,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/addDB"
+        android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="105dp"
         android:layout_marginStart="105dp"
-        android:text="ADD"
+        android:text="stop"
         app:layout_constraintBottom_toTopOf="@+id/tableRow3"
         app:layout_constraintStart_toEndOf="@+id/createDB" />
-
-    <LinearLayout
-        android:id="@+id/graphlayout"
-        android:layout_width="373dp"
-        android:layout_height="210dp"
-        android:layout_marginBottom="256dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:background="#FAFA82"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="31dp" />
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

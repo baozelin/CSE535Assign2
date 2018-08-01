@@ -34,7 +34,7 @@ import android.os.Environment;
  * group 8
  */
 
-public class MainActivity extends AppCompatActivity {
+public class SecondActivity extends AppCompatActivity {
     private double x = 0;
     private double y =0;
     float[] values = new float[20];
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Thread thread;
 
 
-    public EditText patientName;
+    EditText patientName;
     EditText patientID;
     EditText age;
     EditText sex;
@@ -54,26 +54,27 @@ public class MainActivity extends AppCompatActivity {
     String patientNameText;
 
 
-    private LineGraphSeries<DataPoint> series;
+
     private LineGraphSeries<DataPoint> seriesX;
     private LineGraphSeries<DataPoint> seriesY;
     private LineGraphSeries<DataPoint> seriesZ;
-    LinearLayout graphLayout;
-    GraphView graph;
 
-    GraphView graph2;
+    GraphView graphX;
+    GraphView graphY;
+    GraphView graphZ;
+
+
+   // GraphView graph2;
 
     String path;
     File dbfile;
     SQLiteDatabase db;
-    //public static final String DATABASE_NAME = "patient";
-    //public static final String DATABASE_LOCATION = Environment.getExternalStorageState()+ File.separator +"mydata" + File.separator + DATABASE_NAME;
+
 
     @ Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_second);
 
 
         /**
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
          */
         path = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-        //dbfile = new File(Environment.getExternalStorageDirectory()+"/mydata");
+
         dbfile = new File(this.getExternalFilesDir(null) + "/mydata");
 
 
@@ -103,91 +104,50 @@ public class MainActivity extends AppCompatActivity {
         /**
          * build a graph
          */
-        graphLayout = (LinearLayout) findViewById(R.id.graphlayout);
-        graph = (GraphView) findViewById(R.id.graph);
 
-        series = new  LineGraphSeries<DataPoint>();
+        graphX = (GraphView) findViewById(R.id.graphX);
+        graphY = (GraphView) findViewById(R.id.graphY);
+        graphZ = (GraphView) findViewById(R.id.graphZ);
+        //graphLayout.addView(graph);
+
         seriesX = new  LineGraphSeries<DataPoint>();
         seriesY = new  LineGraphSeries<DataPoint>();
         seriesZ = new  LineGraphSeries<DataPoint>();
 
-        Viewport viewport = graph.getViewport();
-        viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(2500);
-        viewport.setXAxisBoundsManual(true);
-        viewport.setMinX(0);
-        viewport.setMaxX(50);
-        viewport.setScrollable(true);
+
 
         Button startButton = (Button) findViewById(R.id.start);
 
+        graphX = (GraphView) findViewById(R.id.graphX);
+        Viewport viewportX = graphX.getViewport();
+        viewportX.setYAxisBoundsManual(true);
+        viewportX.setMinY(0);
+        viewportX.setMaxY(2500);
+        viewportX.setXAxisBoundsManual(true);
+        viewportX.setMinX(0);
+        viewportX.setMaxX(50);
+        viewportX.setScrollable(true);
 
+        graphY = (GraphView) findViewById(R.id.graphY);
+        Viewport viewportY = graphY.getViewport();
+        viewportY.setYAxisBoundsManual(true);
+        viewportY.setMinY(0);
+        viewportY.setMaxY(2500);
+        viewportY.setXAxisBoundsManual(true);
+        viewportY.setMinX(0);
+        viewportY.setMaxX(50);
+        viewportY.setScrollable(true);
 
+        graphZ = (GraphView) findViewById(R.id.graphZ);
+        Viewport viewportZ = graphZ.getViewport();
+        viewportZ.setYAxisBoundsManual(true);
+        viewportZ.setMinY(0);
+        viewportZ.setMaxY(2500);
+        viewportZ.setXAxisBoundsManual(true);
+        viewportZ.setMinX(0);
+        viewportZ.setMaxX(50);
+        viewportZ.setScrollable(true);
 
-        /**
-         * create a start button
-         */
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (ifRun == false) {
-
-                    random = new Random();
-                    ifRun = true;
-                    graph.addSeries(series);
-
-
-                    thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (ifRun) {
-
-                                runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-
-                                        series.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-
-                                    }
-                                });
-
-                                try {
-                                    Thread.sleep(400);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-
-                    });
-                    thread.start();
-                    Toast.makeText(MainActivity.this, "run", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        /**
-         * create a stop button
-         */
-        Button stopButton = (Button) findViewById(R.id.stop);
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ifRun = false;
-                graph.removeAllSeries();
-                Toast.makeText(MainActivity.this,  "stop", Toast.LENGTH_SHORT).show();
-                //graphLayout.removeView(graph);
-
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
-
-            }
-        });
 
         /**
          * build a sex radioGroup
@@ -199,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = radioGroup.getCheckedRadioButtonId();
                 RadioButton choice = (RadioButton) findViewById(id);
                 sexText = choice.getText().toString();
-                Toast.makeText(MainActivity.this, "" + sexText, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SecondActivity.this, "" + sexText, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -208,13 +168,12 @@ public class MainActivity extends AppCompatActivity {
          * create db button
          */
 
-
         Button createDB = (Button) findViewById(R.id.createDB);
         createDB.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
 
-                graphLayout.addView(graph2);
+
 
                 String table_name = patientNameText + "_" + patientIDText + "_" + ageText + "_" + sexText;
 
@@ -228,23 +187,23 @@ public class MainActivity extends AppCompatActivity {
                     db.setTransactionSuccessful(); //commit your changes
                     //System.out.println(table_name);
                     //Log.e("uploadFile", "Source File not exist :" + table_name );
-                    Toast.makeText(MainActivity.this, "CREATE", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SecondActivity.this, "CREATE", Toast.LENGTH_LONG).show();
                 } catch (SQLiteException e) {
                     e.getStackTrace();
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SecondActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 } finally {
                     db.endTransaction();
                 }
 
-
+/*
                 if (ifRun == false) {
 
                     random = new Random();
                     ifRun = true;
-                    graph.addSeries(series);
-                    graph.addSeries(seriesX);
-                    graph.addSeries(seriesY);
-                    graph.addSeries(seriesZ);
+
+                    graph2.addSeries(seriesX);
+                    graph2.addSeries(seriesY);
+                    graph2.addSeries(seriesZ);
 
                     thread = new Thread(new Runnable() {
                         @Override
@@ -274,8 +233,25 @@ public class MainActivity extends AppCompatActivity {
 
                     });
                     thread.start();
-                    Toast.makeText(MainActivity.this, "run", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SecondActivity.this, "run", Toast.LENGTH_SHORT).show();
                 }
+*/
+            drawGraph();
+            }
+        });
+
+
+        Button stopButton = (Button) findViewById(R.id.stop);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ifRun = false;
+                graphX.removeAllSeries();
+                graphY.removeAllSeries();
+                graphZ.removeAllSeries();
+                Toast.makeText(SecondActivity.this,  "stop", Toast.LENGTH_SHORT).show();
+                //graphLayout.removeView(graph);
 
 
             }
@@ -314,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        /**
         Button add = (Button) findViewById(R.id.addDB);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,26 +314,70 @@ public class MainActivity extends AppCompatActivity {
                                     //db.endTransaction();
                                 }
                             } else {
-                                Toast.makeText(MainActivity.this, "Please enter a Age", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SecondActivity.this, "Please enter a Age", Toast.LENGTH_LONG).show();
                             }
                         } else {
-                            Toast.makeText(MainActivity.this, "Please enter a patient ID", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SecondActivity.this, "Please enter a patient ID", Toast.LENGTH_LONG).show();
                         }
 
                     }else{
-                        Toast.makeText(MainActivity.this, "Please enter a patient sex", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SecondActivity.this, "Please enter a patient sex", Toast.LENGTH_LONG).show();
                     }
                 }else{
-                    Toast.makeText(MainActivity.this, "Please enter a patient name", Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(SecondActivity.this, "Please enter a patient name", Toast.LENGTH_LONG).show();
                 }
+            }
 
         });
 
-
-
+        **/
 
 
     }
+
+    public void drawGraph(){
+        if (ifRun == false) {
+
+            random = new Random();
+            ifRun = true;
+
+            graphX.addSeries(seriesX);
+            graphY.addSeries(seriesY);
+            graphZ.addSeries(seriesZ);
+
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (ifRun) {
+
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+
+                                seriesX.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
+                                seriesY.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
+                                seriesZ.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
+
+                            }
+                        });
+
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+            });
+            thread.start();
+            Toast.makeText(SecondActivity.this, "run", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
 
 }
