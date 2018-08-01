@@ -181,7 +181,7 @@ public class SecondActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 if(patientNameText != null) {
-                    
+
                     if(patientIDText != null) {
 
                         if (ageText != null) {
