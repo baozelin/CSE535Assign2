@@ -23,6 +23,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Random;
 
 import android.database.SQLException;
@@ -69,6 +72,7 @@ public class SecondActivity extends AppCompatActivity {
     String path;
     File dbfile;
     SQLiteDatabase db;
+    String table_name;
 
 
     @ Override
@@ -149,6 +153,9 @@ public class SecondActivity extends AppCompatActivity {
         viewportZ.setScrollable(true);
 
 
+
+
+
         /**
          * build a sex radioGroup
          */
@@ -171,73 +178,50 @@ public class SecondActivity extends AppCompatActivity {
         Button createDB = (Button) findViewById(R.id.createDB);
         createDB.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if(patientNameText != null) {
+                    
+                    if(patientIDText != null) {
 
+                        if (ageText != null) {
 
+                            if (sexText != null) {
 
-                String table_name = patientNameText + "_" + patientIDText + "_" + ageText + "_" + sexText;
-
-                try {
-                    db.beginTransaction();
-
-                    //perform your database operations here ...
-                    db.execSQL("create table if not exists  " + table_name + " ( TIMESTAMP FLOAT , X FLOAT, Y FLOAT, Z FLOAT) ");
-                    //db.execSQL("create table if not exists  " + TABLE_NAME + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, SURNAME TEXT, MARKS INTEGER) ");
-
-                    db.setTransactionSuccessful(); //commit your changes
-                    //System.out.println(table_name);
-                    //Log.e("uploadFile", "Source File not exist :" + table_name );
-                    Toast.makeText(SecondActivity.this, "CREATE", Toast.LENGTH_LONG).show();
-                } catch (SQLiteException e) {
-                    e.getStackTrace();
-                    Toast.makeText(SecondActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                } finally {
-                    db.endTransaction();
-                }
-
-/*
-                if (ifRun == false) {
-
-                    random = new Random();
-                    ifRun = true;
-
-                    graph2.addSeries(seriesX);
-                    graph2.addSeries(seriesY);
-                    graph2.addSeries(seriesZ);
-
-                    thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (ifRun) {
-
-                                runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-
-                                        seriesX.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-                                        seriesY.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-                                        seriesZ.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-
-                                    }
-                                });
+                                table_name = patientNameText + "_" + patientIDText + "_" + ageText + "_" + sexText;
 
                                 try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                                    db.beginTransaction();
 
+                                    //perform your database operations here ...
+                                    db.execSQL("create table if not exists  " + table_name + " ( TIMESTAMP TIMESTAMP , X FLOAT, Y FLOAT, Z FLOAT) ");
+
+                                    db.setTransactionSuccessful(); //commit your changes
+
+                                    Toast.makeText(SecondActivity.this, "CREATE", Toast.LENGTH_LONG).show();
+                                } catch (SQLiteException e) {
+                                    e.getStackTrace();
+                                    Toast.makeText(SecondActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                } finally {
+
+                                    db.endTransaction();
+                                    drawGraph();
+                                }
+                            } else {
+                                Toast.makeText(SecondActivity.this, "Please enter a Age", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(SecondActivity.this, "Please enter a patient ID", Toast.LENGTH_LONG).show();
                         }
 
-                    });
-                    thread.start();
-                    Toast.makeText(SecondActivity.this, "run", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(SecondActivity.this, "Please enter a patient sex", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(SecondActivity.this, "Please enter a patient name", Toast.LENGTH_LONG).show();
                 }
-*/
-            drawGraph();
             }
+
         });
 
 
@@ -290,47 +274,7 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
-        /**
-        Button add = (Button) findViewById(R.id.addDB);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                if(patientNameText != null) {
-                    if(sexText != null) {
 
-                        if (patientIDText != null) {
-
-
-                            if (ageText != null) {
-                                //db.beginTransaction();
-                                try {
-                                    //perform your database operations here ...
-                                    db.execSQL("insert into tblPat(name, id, age, sex) values ('" + patientNameText + ",'" + patientIDText + "', '" + ageText + "' ,'" + sexText + "');");
-                                    //db.setTransactionSuccessful(); //commit your changes
-                                } catch (SQLiteException e) {
-                                    //report problem
-                                } finally {
-                                    //db.endTransaction();
-                                }
-                            } else {
-                                Toast.makeText(SecondActivity.this, "Please enter a Age", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(SecondActivity.this, "Please enter a patient ID", Toast.LENGTH_LONG).show();
-                        }
-
-                    }else{
-                        Toast.makeText(SecondActivity.this, "Please enter a patient sex", Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Toast.makeText(SecondActivity.this, "Please enter a patient name", Toast.LENGTH_LONG).show();
-                }
-            }
-
-        });
-
-        **/
 
 
     }
@@ -354,10 +298,27 @@ public class SecondActivity extends AppCompatActivity {
 
                             @Override
                             public void run() {
+                                double xy = random.nextDouble() * 2500d;
+                                double yy = random.nextDouble() * 2500d;
+                                double zy = random.nextDouble() * 2500d;
 
-                                seriesX.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-                                seriesY.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-                                seriesZ.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
+                                seriesX.appendData(new DataPoint(x++, xy), true, 100);
+                                seriesY.appendData(new DataPoint(x++, yy), true, 100);
+                                seriesZ.appendData(new DataPoint(x++, zy), true, 100);
+
+                                Timestamp ts=new Timestamp(new Date().getTime());
+
+                                try {
+                                    //perform your database operations here ...
+                                    db.execSQL("insert into " + table_name + " (timestamp,x,y,z) values ('" + ts + "','" + xy + "', '" + yy + "','" + zy + "' );");
+                                    //db.setTransactionSuccessful(); //commit your changes
+                                } catch (SQLiteException e) {
+                                    e.getStackTrace();
+                                } finally {
+                                    //db.endTransaction();
+                                }
+
+
 
                             }
                         });
