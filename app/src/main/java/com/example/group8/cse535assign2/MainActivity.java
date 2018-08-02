@@ -181,13 +181,35 @@ public class MainActivity extends AppCompatActivity {
                 ifRun = false;
                 graph.removeAllSeries();
                 Toast.makeText(MainActivity.this,  "stop", Toast.LENGTH_SHORT).show();
-                //graphLayout.removeView(graph);
+
+
+                //Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                //startActivity(intent);
+
+            }
+        });
+
+
+        /**
+         * page2 button
+         */
+
+        Button pageButton = (Button) findViewById(R.id.page2);
+        pageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(MainActivity.this,  "move to page2", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                 startActivity(intent);
 
             }
         });
+
+
+
+
 
         /**
          * build a sex radioGroup
@@ -208,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
          * create db button
          */
 
-
+        /*
         Button createDB = (Button) findViewById(R.id.createDB);
         createDB.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -277,11 +299,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "run", Toast.LENGTH_SHORT).show();
                 }
 
-
             }
         });
 
-
+        */
 
         patientName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -314,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        /*
         Button add = (Button) findViewById(R.id.addDB);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
+        */
 
 
 

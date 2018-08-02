@@ -10,20 +10,7 @@
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphY"
         android:layout_width="349dp"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="9dp"
-        android:background="#FAFA82"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/graphX" />
-
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graphZ"
-        android:layout_width="349dp"
-        android:layout_height="79dp"
+        android:layout_height="113dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
@@ -31,12 +18,25 @@
         android:layout_marginTop="8dp"
         android:background="#FAFA82"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graphX" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphZ"
+        android:layout_width="359dp"
+        android:layout_height="111dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="#FAFA82"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graphY" />
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphX"
         android:layout_width="349dp"
-        android:layout_height="82dp"
+        android:layout_height="113dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
@@ -94,70 +94,27 @@
         android:id="@+id/tableRow3"
         android:layout_width="340dp"
         android:layout_height="36dp"
-        android:layout_marginBottom="7dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableRow2"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="103dp"
-            android:layout_height="match_parent"
-            android:text="Patient Name"
-            android:textSize="18dp" />
-
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:hint="Patient Name"
-            android:inputType="textPersonName" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="340dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableRow"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="106dp"
-            android:layout_height="match_parent"
-            android:text="Patient ID"
-            android:textSize="12dp" />
-
-        <EditText
-            android:id="@+id/id"
-            android:layout_width="264dp"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:hint="ID"
-            android:inputType="number" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow"
-        android:layout_width="340dp"
-        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         app:layout_constraintBottom_toTopOf="@+id/linearForm"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="106dp"
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="105dp"
             android:layout_height="match_parent"
-            android:text="Age"
-            android:textSize="18dp" />
+            android:ems="10"
+            android:hint="Patient Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/id"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:hint="ID"
+            android:inputType="number" />
 
         <EditText
             android:id="@+id/age"

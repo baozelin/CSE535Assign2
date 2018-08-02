@@ -1,7 +1,12 @@
 package com.example.group8.cse535assign2;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +42,7 @@ import android.os.Environment;
  * group 8
  */
 
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends AppCompatActivity implements SensorEventListener {
     private double x = 0;
     private double y =0;
     float[] values = new float[20];
@@ -75,10 +80,36 @@ public class SecondActivity extends AppCompatActivity {
     String table_name;
 
 
+
+
+    /**
+     *
+     * sensor
+     */
+
+    private SensorManager accelManager;
+    private Sensor senseAccel;
+    float valuesX ;
+    float valuesY ;
+    float valuesZ ;
+    int index = 0;
+
+
+
     @ Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+
+        /**
+         * sensor
+         */
+        accelManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senseAccel = accelManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelManager.registerListener(this, senseAccel,  SensorManager.SENSOR_DELAY_NORMAL);
+
+
 
 
         /**
@@ -126,7 +157,7 @@ public class SecondActivity extends AppCompatActivity {
         Viewport viewportX = graphX.getViewport();
         viewportX.setYAxisBoundsManual(true);
         viewportX.setMinY(0);
-        viewportX.setMaxY(2500);
+        viewportX.setMaxY(40);
         viewportX.setXAxisBoundsManual(true);
         viewportX.setMinX(0);
         viewportX.setMaxX(50);
@@ -136,7 +167,7 @@ public class SecondActivity extends AppCompatActivity {
         Viewport viewportY = graphY.getViewport();
         viewportY.setYAxisBoundsManual(true);
         viewportY.setMinY(0);
-        viewportY.setMaxY(2500);
+        viewportY.setMaxY(40);
         viewportY.setXAxisBoundsManual(true);
         viewportY.setMinX(0);
         viewportY.setMaxX(50);
@@ -146,7 +177,7 @@ public class SecondActivity extends AppCompatActivity {
         Viewport viewportZ = graphZ.getViewport();
         viewportZ.setYAxisBoundsManual(true);
         viewportZ.setMinY(0);
-        viewportZ.setMaxY(2500);
+        viewportZ.setMaxY(40);
         viewportZ.setXAxisBoundsManual(true);
         viewportZ.setMinX(0);
         viewportZ.setMaxX(50);
@@ -225,6 +256,9 @@ public class SecondActivity extends AppCompatActivity {
         });
 
 
+        /**
+         * stop button
+         */
         Button stopButton = (Button) findViewById(R.id.stop);
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -298,19 +332,17 @@ public class SecondActivity extends AppCompatActivity {
 
                             @Override
                             public void run() {
-                                double xy = random.nextDouble() * 2500d;
-                                double yy = random.nextDouble() * 2500d;
-                                double zy = random.nextDouble() * 2500d;
 
-                                seriesX.appendData(new DataPoint(x++, xy), true, 100);
-                                seriesY.appendData(new DataPoint(x++, yy), true, 100);
-                                seriesZ.appendData(new DataPoint(x++, zy), true, 100);
+                                x += 1;
+                                seriesX.appendData(new DataPoint(x++, valuesX), true, 100);
+                                seriesY.appendData(new DataPoint(x++, valuesY), true, 100);
+                                seriesZ.appendData(new DataPoint(x++, valuesZ), true, 100);
 
                                 Timestamp ts=new Timestamp(new Date().getTime());
 
                                 try {
                                     //perform your database operations here ...
-                                    db.execSQL("insert into " + table_name + " (timestamp,x,y,z) values ('" + ts + "','" + xy + "', '" + yy + "','" + zy + "' );");
+                                    db.execSQL("insert into " + table_name + " (timestamp,x,y,z) values ('" + ts + "','" + valuesX + "', '" + valuesY + "','" + valuesZ + "' );");
                                     //db.setTransactionSuccessful(); //commit your changes
                                 } catch (SQLiteException e) {
                                     e.getStackTrace();
@@ -340,5 +372,38 @@ public class SecondActivity extends AppCompatActivity {
 
     }
 
+    long lasttime = 0;
 
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        long currtime = System.currentTimeMillis();
+
+        Sensor mySensor = sensorEvent.sensor;
+
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER   && currtime - lasttime >= 1000 ) {
+             //index++;
+             valuesX = sensorEvent.values[0];
+             valuesY = sensorEvent.values[1];
+             valuesZ = sensorEvent.values[2];
+
+             lasttime = currtime;
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
 }
