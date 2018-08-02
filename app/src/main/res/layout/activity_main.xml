@@ -198,4 +198,26 @@
         app:layout_constraintBottom_toTopOf="@+id/graphlayout"
         app:layout_constraintEnd_toStartOf="@+id/tableRow4" />
 
+    <Button
+        android:id="@+id/uploadDB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
+        android:text="UPLOAD"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow3"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/downloadDB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:text="DOWNLOAD"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
