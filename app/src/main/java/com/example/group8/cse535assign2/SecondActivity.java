@@ -3,6 +3,7 @@ package com.example.group8.cse535assign2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -72,7 +73,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
     GraphView graphZ;
 
 
-   // GraphView graph2;
+    // GraphView graph2;
 
     String path;
     File dbfile;
@@ -334,9 +335,9 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
                             public void run() {
 
                                 x += 1;
-                                seriesX.appendData(new DataPoint(x++, valuesX), true, 100);
-                                seriesY.appendData(new DataPoint(x++, valuesY), true, 100);
-                                seriesZ.appendData(new DataPoint(x++, valuesZ), true, 100);
+                                seriesX.appendData(new DataPoint(x, valuesX), true, 100);
+                                seriesY.appendData(new DataPoint(x, valuesY), true, 100);
+                                seriesZ.appendData(new DataPoint(x, valuesZ), true, 100);
 
                                 Timestamp ts=new Timestamp(new Date().getTime());
 
@@ -382,15 +383,62 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER   && currtime - lasttime >= 1000 ) {
-             //index++;
-             valuesX = sensorEvent.values[0];
-             valuesY = sensorEvent.values[1];
-             valuesZ = sensorEvent.values[2];
+            //index++;
+            valuesX = sensorEvent.values[0];
+            valuesY = sensorEvent.values[1];
+            valuesZ = sensorEvent.values[2];
 
-             lasttime = currtime;
+            lasttime = currtime;
 
         }
     }
+
+    float dataX[] = new float[10];
+    float dataY[] = new float[10];
+    float dataZ[] = new float[10];
+
+
+
+    public void drawFromDB(){
+        String getData = "SELECT  * FROM " + table_name + " ORDER BY created_at desc";
+        Cursor cs = null;
+
+
+        try {
+
+            cs = db.rawQuery(getData, null);
+
+            //db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        int count = 0;
+
+        if (cs.moveToFirst()) {
+            do {
+
+                dataX[count] = Float.parseFloat(cs.getString(1));
+                dataY[count] = Float.parseFloat(cs.getString(2));
+                dataZ[count] = Float.parseFloat(cs.getString(3));
+
+                index++;
+            } while (cs.moveToNext() && count < 10);
+        }
+
+        for(int i = 0; i < 10; i++){
+            seriesX.appendData(new DataPoint(i, dataX[9 - i]), true, 100);
+            seriesY.appendData(new DataPoint(i, dataY[9 - i]), true, 100);
+            seriesZ.appendData(new DataPoint(i, dataZ[9 - i]), true, 100);
+        }
+
+    }
+
+
+
+
+
+
 
 
 
@@ -406,4 +454,10 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+
+
+
+
+
 }

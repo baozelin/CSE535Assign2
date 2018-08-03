@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private LineGraphSeries<DataPoint> series;
-    private LineGraphSeries<DataPoint> seriesX;
-    private LineGraphSeries<DataPoint> seriesY;
-    private LineGraphSeries<DataPoint> seriesZ;
+    //private LineGraphSeries<DataPoint> seriesX;
+    //private LineGraphSeries<DataPoint> seriesY;
+    //private LineGraphSeries<DataPoint> seriesZ;
     LinearLayout graphLayout;
     GraphView graph;
 
@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
         graph = (GraphView) findViewById(R.id.graph);
 
         series = new  LineGraphSeries<DataPoint>();
-        seriesX = new  LineGraphSeries<DataPoint>();
-        seriesY = new  LineGraphSeries<DataPoint>();
-        seriesZ = new  LineGraphSeries<DataPoint>();
+        //seriesX = new  LineGraphSeries<DataPoint>();
+        //seriesY = new  LineGraphSeries<DataPoint>();
+        //seriesZ = new  LineGraphSeries<DataPoint>();
 
         Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
