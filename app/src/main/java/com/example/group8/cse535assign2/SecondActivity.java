@@ -127,7 +127,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         path = Environment.getExternalStorageDirectory().getAbsolutePath();
 
 
-        dbfile = new File(this.getExternalFilesDir(null) + "/mydata");
+        dbfile = new File(this.getExternalFilesDir(null) + "/CSE535_ASSIGNMENT2");
 
 
         if(!dbfile.exists() && !dbfile.isDirectory()){

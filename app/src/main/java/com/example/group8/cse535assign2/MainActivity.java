@@ -2,8 +2,11 @@ package com.example.group8.cse535assign2;
 
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,15 +29,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 
 import android.os.Environment;
 /**
@@ -62,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private LineGraphSeries<DataPoint> series;
-    //private LineGraphSeries<DataPoint> seriesX;
-    //private LineGraphSeries<DataPoint> seriesY;
-    //private LineGraphSeries<DataPoint> seriesZ;
+
     LinearLayout graphLayout;
     GraphView graph;
 
@@ -73,16 +71,17 @@ public class MainActivity extends AppCompatActivity {
     String path;
     File dbfile;
     SQLiteDatabase db;
-    //public static final String DATABASE_NAME = "patient";
-    //public static final String DATABASE_LOCATION = Environment.getExternalStorageState()+ File.separator +"mydata" + File.separator + DATABASE_NAME;
 
     /** Variables for upload* */
     int serverResponseCode = 0;
     ProgressDialog dialog = null;
     String upLoadServerUri = "http://impact.asu.edu/CSE535Spring18Folder/UploadToServer.php";
+    String downLoadServerUri = "http://impact.asu.edu/CSE535Spring18Folder/UploadToServer.php";
     String uploadFilePath =null;
     String uploadFileName = null;
-
+    String downloadFilePath =null;
+    String downloadFileName = null;
+    DownloadManager downloadManager;
 
     @ Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
         graph = (GraphView) findViewById(R.id.graph);
 
         series = new  LineGraphSeries<DataPoint>();
-        //seriesX = new  LineGraphSeries<DataPoint>();
-        //seriesY = new  LineGraphSeries<DataPoint>();
-        //seriesZ = new  LineGraphSeries<DataPoint>();
 
         Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
@@ -194,10 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 graph.removeAllSeries();
                 Toast.makeText(MainActivity.this,  "stop", Toast.LENGTH_SHORT).show();
 
-
-                //Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                //startActivity(intent);
-
             }
         });
 
@@ -241,79 +233,6 @@ public class MainActivity extends AppCompatActivity {
          * create db button
          */
 
-        /*
-        Button createDB = (Button) findViewById(R.id.createDB);
-        createDB.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                graphLayout.addView(graph2);
-
-                String table_name = patientNameText + "_" + patientIDText + "_" + ageText + "_" + sexText;
-
-                try {
-                    db.beginTransaction();
-
-                    //perform your database operations here ...
-                    db.execSQL("create table if not exists  " + table_name + " ( TIMESTAMP FLOAT , X FLOAT, Y FLOAT, Z FLOAT) ");
-                    //db.execSQL("create table if not exists  " + TABLE_NAME + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, SURNAME TEXT, MARKS INTEGER) ");
-
-                    db.setTransactionSuccessful(); //commit your changes
-                    //System.out.println(table_name);
-                    //Log.e("uploadFile", "Source File not exist :" + table_name );
-                    Toast.makeText(MainActivity.this, "CREATE", Toast.LENGTH_LONG).show();
-                } catch (SQLiteException e) {
-                    e.getStackTrace();
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                } finally {
-                    db.endTransaction();
-                }
-
-
-                if (ifRun == false) {
-
-                    random = new Random();
-                    ifRun = true;
-                    graph.addSeries(series);
-                    graph.addSeries(seriesX);
-                    graph.addSeries(seriesY);
-                    graph.addSeries(seriesZ);
-
-                    thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (ifRun) {
-
-                                runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-
-                                        seriesX.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-                                        seriesY.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-                                        seriesZ.appendData(new DataPoint(x++, random.nextDouble() * 2500d), true, 100);
-
-                                    }
-                                });
-
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-
-                    });
-                    thread.start();
-                    Toast.makeText(MainActivity.this, "run", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        */
 
         patientName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -346,53 +265,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        Button add = (Button) findViewById(R.id.addDB);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                if(patientNameText != null) {
-                    if(sexText != null) {
-
-                        if (patientIDText != null) {
-
-
-                            if (ageText != null) {
-                                //db.beginTransaction();
-                                try {
-                                    //perform your database operations here ...
-                                    db.execSQL("insert into tblPat(name, id, age, sex) values ('" + patientNameText + ",'" + patientIDText + "', '" + ageText + "' ,'" + sexText + "');");
-                                    //db.setTransactionSuccessful(); //commit your changes
-                                } catch (SQLiteException e) {
-                                    //report problem
-                                } finally {
-                                    //db.endTransaction();
-                                }
-                            } else {
-                                Toast.makeText(MainActivity.this, "Please enter a Age", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(MainActivity.this, "Please enter a patient ID", Toast.LENGTH_LONG).show();
-                        }
-
-                    }else{
-                        Toast.makeText(MainActivity.this, "Please enter a patient sex", Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Toast.makeText(MainActivity.this, "Please enter a patient name", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-        });
-
-        */
 
         /**Create upload button**/
         Button uploadButton;
         uploadButton = (Button)findViewById(R.id.uploadDB);
 
-        uploadFilePath = this.getExternalFilesDir(null) + "/mydata";
+        uploadFilePath = this.getExternalFilesDir(null) + "/CSE535_ASSIGNMENT2";
         uploadFileName = "/group8.db";
         /**Php script**/
         upLoadServerUri = "http://impact.asu.edu/CSE535Spring18Folder/UploadToServer.php";
@@ -410,6 +288,31 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }).start();
+            }
+        });
+
+        /**Create download button**/
+        Button downloadButton;
+        downloadButton = (Button)findViewById(R.id.downloadDB);
+        downloadFilePath = "/CSE535_ASSIGNMENT2_DOWN";
+        downloadFileName = "group8.db";
+        /**Php script**/
+        downLoadServerUri = "http://impact.asu.edu/CSE535Spring18Folder/group8.db";
+
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadManager = (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(downLoadServerUri);
+                Uri dUri = Uri.parse(downloadFilePath);
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalFilesDir(MainActivity.this,downloadFilePath,downloadFileName);
+                Long reference =downloadManager.enqueue(request);
+
+                Toast.makeText(MainActivity.this, "Downloading file to: "+downloadFilePath,
+                        Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -553,3 +456,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
+
