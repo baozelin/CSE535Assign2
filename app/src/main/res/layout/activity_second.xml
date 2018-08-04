@@ -7,10 +7,33 @@
     tools:context=".MainActivity">
 
 
+    <Button
+        android:id="@+id/start"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="Start"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow3"
+        app:layout_constraintStart_toEndOf="@+id/uploadDB" />
+
+    <TextView
+        android:id="@+id/ZLABEL"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:text="Z"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/YLABEL" />
+
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphY"
-        android:layout_width="349dp"
-        android:layout_height="113dp"
+        android:layout_width="345dp"
+        android:layout_height="115dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
@@ -20,23 +43,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graphX" />
 
+    <TextView
+        android:id="@+id/YLABEL"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="85dp"
+        android:ems="10"
+        android:text="Y"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/XLABEL" />
+
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphZ"
-        android:layout_width="359dp"
-        android:layout_height="111dp"
+        android:layout_width="345dp"
+        android:layout_height="115dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:background="#FAFA82"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graphY" />
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphX"
-        android:layout_width="349dp"
-        android:layout_height="113dp"
+        android:layout_width="345dp"
+        android:layout_height="115dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
@@ -48,14 +83,14 @@
 
     <LinearLayout
         android:id="@+id/linearForm"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <RadioGroup
             android:id="@+id/sexRadioGroup"
@@ -65,7 +100,7 @@
 
             <TextView
                 android:id="@+id/sex"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Sex"
@@ -73,7 +108,7 @@
 
             <RadioButton
                 android:id="@+id/male"
-                android:layout_width="88dp"
+                android:layout_width="83dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="male"
@@ -81,11 +116,11 @@
 
             <RadioButton
                 android:id="@+id/female"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="female"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
         </RadioGroup>
 
     </LinearLayout>
@@ -93,7 +128,7 @@
     <TableRow
         android:id="@+id/tableRow3"
         android:layout_width="340dp"
-        android:layout_height="36dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
@@ -127,24 +162,59 @@
 
     <Button
         android:id="@+id/createDB"
-        android:layout_width="71dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:text="CreateDB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableRow3" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="70dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"
-        android:text="create"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Stop"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow3"
+        app:layout_constraintEnd_toStartOf="@+id/downloadDB" />
+
+    <Button
+        android:id="@+id/uploadDB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="UPLOAD"
         app:layout_constraintBottom_toTopOf="@+id/tableRow3"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/stop"
+        android:id="@+id/downloadDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="105dp"
-        android:layout_marginStart="105dp"
-        android:text="stop"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:text="DOWNLOAD"
         app:layout_constraintBottom_toTopOf="@+id/tableRow3"
-        app:layout_constraintStart_toEndOf="@+id/createDB" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/XLABEL"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="39dp"
+        android:ems="10"
+        android:text="X"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@android:color/transparent" />
 
 </android.support.constraint.ConstraintLayout>
